@@ -1,5 +1,5 @@
 # SocketTester
-TCP/UDP socket testing between machines
+TCP/UDP socket testing between machines (IPv4 and IPv6 supported)
 
 # Help
     ./socket_tester.py -h
@@ -17,18 +17,20 @@ options:
     ./socket_tester.py server -h
 
 ```
-usage: socket_tester.py server [-h] [-I IP] [-P IP] [-m {tcp,udp}]
+usage: socket_tester.py server [-h] [-I IP] [-P IP] [-s {tcp,udp}] [-t {4,6}]
 
 options:
   -h, --help            show this help message and exit
   -I, --source-ip-address IP
   -P, --source-port IP
-  -m, --mode {tcp,udp}
+  -s, --socket-type {tcp,udp}
+  -t, --family-type {4,6}
 ```
 # Client
     ./socket_tester.py client -h
 ```
-usage: socket_tester.py client [-h] [-I IP] [-P PORT] -d IP or HOSTNAME -p PORT [-m {tcp,udp}]
+usage: socket_tester.py client [-h] [-I IP] [-P PORT] -d IP or HOSTNAME -p PORT [-s {tcp,udp}]
+                               [-t {4,6}]
 
 options:
   -h, --help            show this help message and exit
@@ -36,5 +38,6 @@ options:
   -P, --source-port PORT
   -d, --destination IP or HOSTNAME
   -p, --destination-port PORT
-  -m, --mode {tcp,udp}
+  -s, --socket-type {tcp,udp}
+  -t, --family-type {4,6}
 ```
