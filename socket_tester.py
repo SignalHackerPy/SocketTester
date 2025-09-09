@@ -123,6 +123,8 @@ def print_info(s: CustomSocket, socket_type: str):
 
 
 def server_run(args):
+    args.source_addr = get_source_ip_info(args.socket_type.upper(), args.family_type, args.source_ip_address,
+                                          args.source_port)
     if args.socket_type.upper() == 'TCP':
         s = TCPSocketServer(args.family_type, args.source_addr)
         s.listen()
@@ -142,6 +144,8 @@ def server_run(args):
 
 
 def client_run(args):
+    args.source_addr = get_source_ip_info(args.socket_type.upper(), args.family_type, args.source_ip_address,
+                                          args.source_port)
     if args.socket_type.upper() == 'TCP':
         s = TCPSocketClient(args.family_type, args.source_addr)
 
@@ -235,9 +239,6 @@ def parse_args() -> Namespace:
 
 def main():
     args = parse_args()
-
-    args.source_addr = get_source_ip_info(args.socket_type.upper(), args.family_type, args.source_ip_address,
-                                          args.source_port)
 
     if hasattr(args, 'func'):
         args.func(args)
