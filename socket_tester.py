@@ -93,7 +93,7 @@ def get_source_ip_info(socket_type: str, family_type: int, source_ip_address: st
         interfaces = InterfaceInfo()
         int_ip = ''
         for interface in interfaces.interfaces:
-            if interface.name != 'lo' and (interface.af == _family_type.get(family_type)):
+            if not interface.name.startswith('lo') and (interface.af == _family_type.get(family_type)):
                 int_ip = interface.ip
                 break
         return socket.getaddrinfo(int_ip, source_port, _family_type.get(family_type),
