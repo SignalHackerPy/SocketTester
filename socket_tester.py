@@ -23,6 +23,9 @@ class CustomSocket:
         print('Source IP: ', self.s.getsockname()[0])
         print('Source Port: ', self.s.getsockname()[1])
 
+    def close(self):
+        self.s.close()
+
 
 class TCPSocketServer(CustomSocket):
     def __init__(self, family_type: int, addr):
@@ -93,7 +96,8 @@ def get_source_ip_info(socket_type: str, family_type: int, source_ip_address: st
         interfaces = InterfaceInfo()
         int_ip = ''
         for interface in interfaces.interfaces:
-            if not interface.name.startswith('lo') and (interface.af == _family_type.get(family_type)) and not interface.ip.startswith('169.254'):
+            if not interface.name.startswith('lo') and (
+                    interface.af == _family_type.get(family_type)) and not interface.ip.startswith('169.254'):
                 int_ip = interface.ip
                 break
         return socket.getaddrinfo(int_ip, source_port, _family_type.get(family_type),
@@ -133,6 +137,9 @@ def server_run(args):
 
         conn, addr = s.accept()
         print_destination(addr)
+
+        conn.close()
+        s.close()
     else:
         s = UDPSocket(args.family_type, args.source_addr)
 
@@ -141,6 +148,8 @@ def server_run(args):
         data, addr = s.recvfrom()
         print_destination(addr)
         s.sendto(data, addr)
+
+        s.close()
 
 
 def client_run(args):
@@ -153,6 +162,8 @@ def client_run(args):
 
         s.connect((args.destination, args.destination_port))
         print_destination(s.getpeername())
+
+        s.close()
     else:
         s = UDPSocket(args.family_type, args.source_addr)
 
@@ -161,6 +172,8 @@ def client_run(args):
         s.sendto(b'0', (args.destination, args.destination_port))
         data, addr = s.recvfrom()
         print_destination(addr)
+
+        s.close()
 
 
 def parse_args() -> Namespace:
